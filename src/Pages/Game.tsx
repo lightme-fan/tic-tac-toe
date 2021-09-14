@@ -4,22 +4,36 @@ import Squares from '../components/Square/Squares'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   getDrawGame,
-  getWinner,
   selectBoard,
   getScore,
+  getBoards,
+  setStartGame,
+  getTimer,
 } from '../redux/slices/boardsSlice'
 import Button from '../components/Button/Button'
+import {
+  getButtonLabel,
+  getFirstPlayers,
+  getSecondPlayer,
+  selectPlayers,
+} from '../redux/slices/playersSlice'
+import { getWinner, selectWinner } from '../redux/slices/winnerSlice'
+import { start } from 'repl'
 
 const Game = () => {
   const boardState = useSelector(selectBoard)
+  const player = useSelector(selectPlayers)
+  const winnerState = useSelector(selectWinner)
   const dispatch = useDispatch()
-  const [boards, setBoards] = useState(boardState.boards)
+
   let time = Number(boardState.timer)
   let players = ['X', 'O']
   const randomTurn = players[Math.floor(Math.random() * players.length)]
+
+  const [boards, setBoards] = useState(boardState.boards)
   const [turn, setTurn] = useState<string>(randomTurn)
   const [timing, setTiming] = useState<number>(time)
-  const [winner, setWinner] = useState<string>(boardState.winner)
+  const [winner, setWinner] = useState<string | null>(winnerState.winner)
   const [looser, setLooser] = useState<string>('')
   const [score, setScore] = useState<number>(Number(boardState.score))
 
@@ -27,21 +41,44 @@ const Game = () => {
     event: React.MouseEvent<HTMLButtonElement>,
     index: number
   ) {
-    let button = event.target as HTMLButtonElement
     if (index < 0 || index > 9) return
     const newBoard = [...boards]
     newBoard.splice(index, 1, turn)
     setBoards(newBoard)
+    dispatch(getBoards(newBoard))
     setTurn(turn === 'X' ? 'O' : 'X')
     setTiming(time)
   }
 
-  let heading = `${
-    turn === 'X' ? boardState.first_player : boardState.second_player
-  }'s turn`
+  function winningFunc() {
+    if (timing <= 0) {
+      dispatch(getDrawGame())
+    }
 
-  if (winner) {
-    heading = `${winner} won the game`
+    let winningPositionsIndex = 0
+    let winner: string | null = null
+
+    while (winningPositionsIndex < winnerState.winPosition.length && !winner) {
+      const boardPositionsToCheck =
+        winnerState.winPosition[winningPositionsIndex]
+      const boardValuesToCheck = boardPositionsToCheck.map(
+        (index) => boards[index]
+      )
+
+      const checkingValue = boardValuesToCheck[0]
+      const isFinished = boardValuesToCheck.every(
+        (value) => value === checkingValue && checkingValue
+      )
+
+      winner = !isFinished ? null : checkingValue
+      winningPositionsIndex++
+    }
+
+    if (winner) {
+      setWinner(winner === 'X' ? player.second_player : player.first_player)
+      dispatch(getWinner(winner))
+    }
+    // setLooser(winner === 'X' ? player.second_player : player.first_player)
   }
 
   useEffect(() => {
@@ -52,59 +89,48 @@ const Game = () => {
         })
       }
     }, 1000)
-
-    if (timing <= 0) {
-      dispatch(getDrawGame())
-    }
-
-    let winningPositionsIndex = 0
-    let winner: string | null = null
-    while (winningPositionsIndex < boardState.winPosition.length && !winner) {
-      const boardPositionsToCheck =
-        boardState.winPosition[winningPositionsIndex]
-      const boardValuesToCheck = boardPositionsToCheck.map(
-        (index) => boards[index]
-      )
-      const checkingValue = boardValuesToCheck[0]
-
-      const isFinished = boardValuesToCheck.every(
-        (value) => value === checkingValue && checkingValue
-      )
-      winner = !isFinished ? null : checkingValue
-      winningPositionsIndex++
-    }
+    winningFunc()
     if (winner) {
-      setWinner(
-        winner === 'X' ? boardState.first_player : boardState.second_player
-      )
-      dispatch(getWinner(winner))
-      setScore((prevNum) => prevNum + 1)
-      dispatch(getScore(score.toString()))
+      setScore(score + 1)
     }
-
     return () => {
       clearInterval(myInterval)
     }
-  }, [boards, turn, timing, winner])
+  }, [boards, turn, timing, winner, player.first_player, player.second_player])
+
+  let heading = `${
+    turn === 'X' ? player.first_player : player.second_player
+  }'s turn`
+  if (timing <= 0) {
+    heading = `Time out - ${looser} won!`
+  }
+  if (winner) {
+    heading = `${winner} won the game`
+  }
 
   function handleRestartButton() {
+    dispatch(setStartGame())
+    dispatch(getFirstPlayers(player.first_player))
+    dispatch(getSecondPlayer(player.second_player))
+    dispatch(getTimer(timing.toString()))
+    dispatch(getBoards(Array(9).fill('')))
+    dispatch(getButtonLabel('Play again'))
+    dispatch(getScore(score.toString()))
     setBoards(Array(9).fill(''))
     setWinner('')
     setTiming(time)
     heading = `${
-      turn === 'X' ? boardState.first_player : boardState.second_player
+      turn === 'X' ? player.first_player : player.second_player
     }'s turn`
   }
-
-  console.log(boardState.score)
 
   return (
     <Gaming>
       <h4>
-        {heading} <span>{score === 0 ? '' : score}</span>
+        {heading} <span>{boardState.score === '0' ? '' : score}</span>
       </h4>
       <Squares handleClick={handleClickBoard} boards={boards} />
-      {winner ? (
+      {winner || timing <= 0 ? (
         <Button label={'Restart'} onClick={handleRestartButton} />
       ) : (
         <p>Time left: {timing}s</p>

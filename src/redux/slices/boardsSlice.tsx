@@ -1,48 +1,27 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { StyledInterface } from 'styled-components'
 import { RootState } from '../store'
 
 export interface StateType {
   boards: any
-  first_player: string
-  second_player: string
   timer: string
   turn: string
   isStart: boolean
   status: 'idle' | 'loading' | 'failed'
-  winPosition: number[][]
-  winner: string
   score: string
   drawGame: boolean
 }
 
 const initialState: StateType = {
   boards: Array(9).fill(''),
-  first_player: '',
-  second_player: '',
   timer: '0',
   turn: '',
   isStart: false,
   status: 'idle',
-  winPosition: [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ],
-  winner: '',
   score: '0',
   drawGame: false,
 }
 
-export function fetchPlayers(name = '') {
+export function fetchPropGame(name = '') {
   return new Promise<{ data: string }>((resolve) =>
     setTimeout(() => resolve({ data: name }), 500)
   )
@@ -54,10 +33,10 @@ export function fetchBoards(item = []) {
   )
 }
 
-export const getPLayersAsync = createAsyncThunk(
+export const getPropAsync = createAsyncThunk(
   'players/fetchPlayers',
   async (name: string) => {
-    const response = await fetchPlayers(name)
+    const response = await fetchPropGame(name)
     return response.data
   }
 )
@@ -77,12 +56,6 @@ const boardsSlice = createSlice({
     getBoards: (state, action: PayloadAction<any>) => {
       state.boards = action?.payload
     },
-    getFirstPlayers: (state, action: PayloadAction<string>) => {
-      state.first_player = action?.payload
-    },
-    getSecondPlayer: (state, action: PayloadAction<string>) => {
-      state.second_player = action?.payload
-    },
     getTimer: (state, action: PayloadAction<string>) => {
       state.timer = action?.payload
     },
@@ -91,9 +64,6 @@ const boardsSlice = createSlice({
     },
     setTurn: (state, action: PayloadAction<string>) => {
       state.turn = action.payload
-    },
-    getWinner: (state, action: PayloadAction<string>) => {
-      state.winner = action.payload
     },
     getScore: (state, action: PayloadAction<string>) => {
       state.score = action.payload
@@ -104,15 +74,12 @@ const boardsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getPLayersAsync.pending, (state) => {
+      .addCase(getPropAsync.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(getPLayersAsync.fulfilled, (state, action) => {
+      .addCase(getPropAsync.fulfilled, (state, action) => {
         state.status = 'idle'
-        state.first_player = action.payload
-        state.second_player = action.payload
         state.turn = action.payload
-        state.winner = action.payload
         state.score = action.payload
       })
       .addCase(getBoardsAsync.pending, (state) => {
@@ -126,13 +93,10 @@ const boardsSlice = createSlice({
 })
 
 export const {
-  getFirstPlayers,
-  getSecondPlayer,
   getTimer,
   setTurn,
   setStartGame,
   getBoards,
-  getWinner,
   getScore,
   getDrawGame,
 } = boardsSlice.actions

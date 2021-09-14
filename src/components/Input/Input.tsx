@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 interface InputProps {
   iconSrc?: string
+  score?: string
   alt?: string
   value?: string
   placeholder: string
@@ -11,6 +12,7 @@ interface InputProps {
 
 const Input: React.FC<InputProps> = ({
   iconSrc,
+  score,
   alt,
   value,
   placeholder,
@@ -19,6 +21,7 @@ const Input: React.FC<InputProps> = ({
   return (
     <Label>
       <img src={iconSrc} alt={alt} />
+      {score !== '0' && <span>{score}</span>}
       <InputStyle
         type='text'
         value={value}
@@ -36,6 +39,10 @@ const Label = styled.label`
 
   img {
     max-width: 24px;
+  }
+
+  span {
+    align-self: center;
   }
 `
 

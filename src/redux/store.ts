@@ -1,9 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import boardsSlice from './slices/boardsSlice'
+import playersSlice from './slices/playersSlice'
+import winnerSlice from './slices/winnerSlice'
 
 export const store = configureStore({
   reducer: {
     boards: boardsSlice,
+    players: playersSlice,
+    winner: winnerSlice,
   },
 })
 
