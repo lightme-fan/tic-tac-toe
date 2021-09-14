@@ -1,61 +1,33 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import Input from '../components/Input/Input'
 import roundIcon from '../icons/round.svg'
 import crossIcon from '../icons/cross.svg'
 import Timer from '../components/Timer/Timer'
 import Button from '../components/Button/Button'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  getScore,
-  getTimer,
-  selectBoard,
-  setStartGame,
-} from '../redux/slices/boardsSlice'
-import {
-  getButtonLabel,
-  getFirstPlayers,
-  getSecondPlayer,
-  selectPlayers,
-} from '../redux/slices/playersSlice'
 import Game from './Game'
+import useTicTacToe from '../customHooks/useTicTacToe'
 
 function Home() {
-  const boardSelector = useSelector(selectBoard)
-  const player = useSelector(selectPlayers)
-  const dispatch = useDispatch()
-
-  const [firstPlayer, setFirstPlayer] = useState<string>(player.first_player)
-  const [secondPlayer, setSecondPlayer] = useState<string>(player.second_player)
-  const [timer, setTimer] = useState<string>('0')
-
-  const handleStartButton = (event: any) => {
-    event.preventDefault()
-    firstPlayer === '' && setFirstPlayer('O')
-    secondPlayer === '' && setSecondPlayer('X')
-    timer === '0' && setTimer('5')
-    dispatch(getFirstPlayers(firstPlayer))
-    dispatch(getSecondPlayer(secondPlayer))
-    dispatch(getTimer(timer))
-    setTimeout(() => {
-      dispatch(setStartGame())
-    }, 1000)
-  }
-
-  const handleRebootBtn = () => {
-    setFirstPlayer('')
-    setSecondPlayer('')
-    setTimer('0')
-    dispatch(getButtonLabel('Start'))
-    dispatch(getScore('0'))
-  }
+  const {
+    boardState,
+    player,
+    firstPlayer,
+    setFirstPlayer,
+    secondPlayer,
+    timer,
+    setTimer,
+    setSecondPlayer,
+    handleStartButton,
+    handleRebootBtn,
+  } = useTicTacToe()
 
   return (
     <Fragment>
-      {!boardSelector.isStart ? (
+      {!boardState.isStart ? (
         <>
           <form onSubmit={handleStartButton}>
             <Input
-              score={boardSelector.score}
+              score={boardState.score}
               iconSrc={roundIcon}
               alt={'Round'}
               value={firstPlayer}
@@ -65,7 +37,7 @@ function Home() {
               }
             />
             <Input
-              score={boardSelector.score}
+              score={boardState.score}
               iconSrc={crossIcon}
               value={secondPlayer}
               placeholder={'Leave empty to use AI or enter player name'}
