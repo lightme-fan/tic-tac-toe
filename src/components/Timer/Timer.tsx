@@ -17,13 +17,15 @@ const Timer: React.FC<TimerProps> = ({ value, onChange }) => {
 
 const TimerStyle = styled.div`
   display: flex;
-  font-size: 1rem;
-  line-height: 36px;
+  font-size: 28px;
+  line-height: 58px;
 
   input {
     width: 30%;
     margin-left: 10px;
     border: none;
+    font-size: 28px;
+    line-height: 58px;
 
     &:hover,
     &:focus {

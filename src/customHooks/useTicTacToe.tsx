@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   getDrawGame,
   selectBoard,
-  getScore,
   getBoards,
   setStartGame,
   getTimer,
@@ -22,7 +21,12 @@ import {
   getSecondPlayer,
   selectPlayers,
 } from '../redux/slices/playersSlice'
-import { getWinner, selectWinner } from '../redux/slices/winnerSlice'
+import {
+  getFirstPlayerScore,
+  getSecondPlayerScore,
+  getWinner,
+  selectWinner,
+} from '../redux/slices/winnerSlice'
 
 function useTicTacToe() {
   const boardState = useSelector(selectBoard)
@@ -43,14 +47,32 @@ function useTicTacToe() {
   const [turn, setTurn] = useState<string>(randomTurn)
   const [timing, setTiming] = useState<number>(time)
   const [winner, setWinner] = useState<string | null>(winnerState.winner)
-  const [looser, setLooser] = useState<string>('')
-  const [score, setScore] = useState<number>(Number(boardState.score))
+  const [isDraw, setIsDraw] = useState<boolean>(boardState.drawGame)
+  const [firstPlayerScore, setFirstPlayerScore] = useState<number>(
+    winnerState.firstPlayerScore
+  )
+  const [secondPlayerScore, setSecondPlayerScore] = useState<number>(
+    winnerState.secondPlayerScore
+  )
   const [isHorizontal, setIsHorizontal] = useState<boolean>(
     crossBar.isHorizontal
   )
   const [isVertical, setIsVertical] = useState<boolean>(crossBar.isVertical)
   const [isDiagonal, setIsDiagonal] = useState<boolean>(crossBar.isDiagonal)
   const [position, setPosition] = useState(crossBar.position)
+
+  const handleStartButton = (event: any) => {
+    event.preventDefault()
+    timer === '0' && setTimer('5')
+    firstPlayer === '' && setFirstPlayer('X')
+    secondPlayer === '' && setSecondPlayer('O')
+    dispatch(getFirstPlayers(firstPlayer === '' ? 'X' : firstPlayer))
+    dispatch(getSecondPlayer(secondPlayer === '' ? 'O' : secondPlayer))
+    dispatch(getTimer(timer === '0' ? '5' : timer))
+    setTimeout(() => {
+      dispatch(setStartGame())
+    }, 1000)
+  }
 
   function handleClickBoard(
     event: React.MouseEvent<HTMLButtonElement>,
@@ -66,12 +88,8 @@ function useTicTacToe() {
   }
 
   function winningFunc() {
-    if (timing <= 0) {
-      dispatch(getDrawGame())
-    }
-
     let winningPositionsIndex = 0
-    let winner: string | null = null
+    let winner: string = ''
 
     while (winningPositionsIndex < winnerState.winPosition.length && !winner) {
       const boardPositionsToCheck =
@@ -93,42 +111,51 @@ function useTicTacToe() {
       setWinner(winner === 'X' ? player.second_player : player.first_player)
       dispatch(getWinner(winner))
     }
+
+    // if (winner === 'X') {
+    //   setFirstPlayerScore(firstPlayerScore + 1)
+    //   dispatch(getFirstPlayerScore(firstPlayerScore + 1))
+    // }
+    // if (winner === 'Y') {
+    //   setSecondPlayerScore(secondPlayerScore + 1)
+    //   dispatch(getSecondPlayerScore(secondPlayerScore + 1))
+    // }
   }
 
   function horizontalBar() {
     if (boards[0] === 'X' && boards[1] === 'X' && boards[2] === 'X') {
       setIsHorizontal(true)
-      dispatch(getHorizontal())
+      dispatch(getHorizontal(true))
       setPosition('142px')
       dispatch(getPosition('142px'))
     }
     if (boards[3] === 'X' && boards[4] === 'X' && boards[5] === 'X') {
       setIsHorizontal(true)
-      dispatch(getHorizontal())
+      dispatch(getHorizontal(true))
       setPosition('245px')
       dispatch(getPosition('245px'))
     }
     if (boards[6] === 'X' && boards[7] === 'X' && boards[8] === 'X') {
       setIsHorizontal(true)
-      dispatch(getHorizontal())
+      dispatch(getHorizontal(true))
       setPosition('350px')
       dispatch(getPosition('350px'))
     }
     if (boards[0] === 'O' && boards[1] === 'O' && boards[2] === 'O') {
       setIsHorizontal(true)
-      dispatch(getHorizontal())
+      dispatch(getHorizontal(true))
       setPosition('142px')
       dispatch(getPosition('142px'))
     }
     if (boards[3] === 'O' && boards[4] === 'O' && boards[5] === 'O') {
       setIsHorizontal(true)
-      dispatch(getHorizontal())
+      dispatch(getHorizontal(true))
       setPosition('245px')
       dispatch(getPosition('245px'))
     }
     if (boards[6] === 'O' && boards[7] === 'O' && boards[8] === 'O') {
       setIsHorizontal(true)
-      dispatch(getHorizontal())
+      dispatch(getHorizontal(true))
       setPosition('350px')
       dispatch(getPosition('350px'))
     }
@@ -137,37 +164,37 @@ function useTicTacToe() {
   function verticalBar() {
     if (boards[0] === 'X' && boards[3] === 'X' && boards[6] === 'X') {
       setIsVertical(true)
-      dispatch(getVertical())
+      dispatch(getVertical(true))
       setPosition('16%')
       dispatch(getPosition('16%'))
     }
     if (boards[1] === 'X' && boards[4] === 'X' && boards[7] === 'X') {
       setIsVertical(true)
-      dispatch(getVertical())
+      dispatch(getVertical(true))
       setPosition('50%')
       dispatch(getPosition('50%'))
     }
     if (boards[2] === 'X' && boards[5] === 'X' && boards[8] === 'X') {
       setIsVertical(true)
-      dispatch(getVertical())
+      dispatch(getVertical(true))
       setPosition('84%')
       dispatch(getPosition('84%'))
     }
     if (boards[0] === 'O' && boards[3] === 'O' && boards[6] === 'O') {
       setIsVertical(true)
-      dispatch(getVertical())
+      dispatch(getVertical(true))
       setPosition('16%')
       dispatch(getPosition('18%'))
     }
     if (boards[1] === 'O' && boards[4] === 'O' && boards[7] === 'O') {
       setIsVertical(true)
-      dispatch(getVertical())
+      dispatch(getVertical(true))
       setPosition('50%')
       dispatch(getPosition('50%'))
     }
     if (boards[2] === 'O' && boards[5] === 'O' && boards[8] === 'O') {
       setIsVertical(true)
-      dispatch(getVertical())
+      dispatch(getVertical(true))
       setPosition('84%')
       dispatch(getPosition('84%'))
     }
@@ -176,28 +203,59 @@ function useTicTacToe() {
   function diagonalBar() {
     if (boards[0] === 'X' && boards[4] === 'X' && boards[8] === 'X') {
       setIsDiagonal(true)
-      dispatch(getDiagonal())
+      dispatch(getDiagonal(true))
       setPosition('-45deg')
       dispatch(getPosition('-45deg'))
     }
     if (boards[2] === 'X' && boards[4] === 'X' && boards[6] === 'X') {
       setIsDiagonal(true)
-      dispatch(getDiagonal())
+      dispatch(getDiagonal(true))
       setPosition('45deg')
       dispatch(getPosition('45deg'))
     }
     if (boards[0] === 'O' && boards[4] === 'O' && boards[8] === 'O') {
       setIsDiagonal(true)
-      dispatch(getDiagonal())
+      dispatch(getDiagonal(true))
       setPosition('-45deg')
       dispatch(getPosition('-45deg'))
     }
     if (boards[2] === 'O' && boards[4] === 'O' && boards[6] === 'O') {
       setIsDiagonal(true)
-      dispatch(getDiagonal())
+      dispatch(getDiagonal(true))
       setPosition('45deg')
       dispatch(getPosition('45deg'))
     }
+  }
+
+  function handleRestartButton(heading: string) {
+    let title = heading
+    dispatch(setStartGame())
+    dispatch(getTimer(timing.toString()))
+    setBoards(Array(9).fill(''))
+    dispatch(getBoards(Array(9).fill('')))
+    dispatch(getButtonLabel('Play again'))
+    setWinner('')
+    dispatch(getWinner(''))
+    setIsHorizontal(false)
+    setIsVertical(false)
+    setIsDiagonal(false)
+    dispatch(getHorizontal(false))
+    dispatch(getVertical(false))
+    dispatch(getDiagonal(false))
+    setTiming(time)
+    title = `${
+      turn === 'X' ? player.first_player : player.second_player
+    }'s turn`
+  }
+
+  console.log('firstPlayerScore', firstPlayerScore)
+
+  const handleRebootBtn = () => {
+    setFirstPlayer('')
+    setSecondPlayer('')
+    setTimer('0')
+    dispatch(getButtonLabel('Start'))
+    // dispatch(getScore('0'))
   }
 
   useEffect(() => {
@@ -217,43 +275,20 @@ function useTicTacToe() {
     return () => {
       clearInterval(myInterval)
     }
-  }, [boards, turn, timing, winner, player.first_player, player.second_player])
-
-  function handleRestartButton(heading: string) {
-    let title = heading
-    dispatch(setStartGame())
-    dispatch(getTimer(timing.toString()))
-    dispatch(getBoards(Array(9).fill('')))
-    dispatch(getButtonLabel('Play again'))
-    dispatch(getScore(score.toString()))
-    setBoards(Array(9).fill(''))
-    setWinner('')
-    setTiming(time)
-    title = `${
-      turn === 'X' ? player.first_player : player.second_player
-    }'s turn`
-  }
-
-  const handleStartButton = (event: any) => {
-    event.preventDefault()
-    timer === '0' && setTimer('5')
-    firstPlayer === '' && setFirstPlayer('O')
-    secondPlayer === '' && setSecondPlayer('X')
-    dispatch(getFirstPlayers(firstPlayer))
-    dispatch(getSecondPlayer(secondPlayer))
-    dispatch(getTimer(timer === '0' ? '5' : timer))
-    setTimeout(() => {
-      dispatch(setStartGame())
-    }, 1000)
-  }
-
-  const handleRebootBtn = () => {
-    setFirstPlayer('')
-    setSecondPlayer('')
-    setTimer('0')
-    dispatch(getButtonLabel('Start'))
-    dispatch(getScore('0'))
-  }
+  }, [
+    boards,
+    turn,
+    timing,
+    winner,
+    isDraw,
+    firstPlayerScore,
+    secondPlayerScore,
+    player.first_player,
+    player.second_player,
+    isHorizontal,
+    isDiagonal,
+    isVertical,
+  ])
 
   return {
     boardState,
@@ -262,10 +297,10 @@ function useTicTacToe() {
     position,
     boards,
     winner,
+    winnerState,
     timing,
+    isDraw,
     turn,
-    looser,
-    score,
     firstPlayer,
     setFirstPlayer,
     secondPlayer,

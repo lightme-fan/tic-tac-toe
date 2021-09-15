@@ -35,14 +35,14 @@ const crossBarSlice = createSlice({
   name: 'players',
   initialState,
   reducers: {
-    getHorizontal: (state) => {
-      state.isHorizontal = true
+    getHorizontal: (state, action: PayloadAction<boolean>) => {
+      state.isHorizontal = action?.payload
     },
-    getVertical: (state) => {
-      state.isVertical = true
+    getVertical: (state, action: PayloadAction<boolean>) => {
+      state.isVertical = action?.payload
     },
-    getDiagonal: (state) => {
-      state.isDiagonal = true
+    getDiagonal: (state, action: PayloadAction<boolean>) => {
+      state.isDiagonal = action?.payload
     },
     getPosition: (state, action: PayloadAction<any>) => {
       state.position = action.payload
@@ -55,9 +55,9 @@ const crossBarSlice = createSlice({
       })
       .addCase(getCrossBarAsync.fulfilled, (state, action) => {
         state.status = 'idle'
-        state.isHorizontal = true
-        state.isVertical = true
-        state.isDiagonal = true
+        state.isHorizontal = action.payload
+        state.isVertical = action.payload
+        state.isDiagonal = action.payload
         state.position = action.payload
       })
   },

@@ -1,6 +1,5 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import bar from '../../icons/isVertical.svg'
 interface PropType {
   index?: number
   handleClick(event: React.MouseEvent<HTMLButtonElement>, index: number): void

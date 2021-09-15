@@ -25,6 +25,7 @@ const Wrapper = styled.div`
   gap: 44px;
 
   form {
+    width: 100%;
     align-self: center;
   }
 `

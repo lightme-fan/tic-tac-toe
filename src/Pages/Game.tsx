@@ -13,7 +13,6 @@ const Game = () => {
     winner,
     timing,
     turn,
-    score,
     handleClickBoard,
     handleRestartButton,
   } = useTicTacToe()
@@ -22,16 +21,18 @@ const Game = () => {
     turn === 'X' ? player.first_player : player.second_player
   }'s turn`
   if (timing <= 0) {
-    heading = `Time out - ${winner} won!`
+    heading = `Time out - ${
+      turn === 'X' ? player.second_player : player.first_player
+    } won !`
   }
   if (winner) {
-    heading = `${winner} won the game`
+    heading = `${winner} won the game !`
   }
 
   return (
     <Gaming>
       <h4>
-        {heading} <span>{boardState.score === '0' ? '' : score}</span>
+        {heading} <span></span>
       </h4>
       <Squares
         handleClick={handleClickBoard}

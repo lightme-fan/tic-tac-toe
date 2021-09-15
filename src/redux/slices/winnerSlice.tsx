@@ -4,6 +4,8 @@ import { RootState } from '../store'
 export interface PropType {
   winner: string
   winPosition: number[][]
+  firstPlayerScore: number
+  secondPlayerScore: number
   status: 'idle' | 'loading' | 'failed'
 }
 
@@ -22,6 +24,8 @@ const initialState: PropType = {
     [0, 4, 8],
     [2, 4, 6],
   ],
+  firstPlayerScore: 0,
+  secondPlayerScore: 0,
   status: 'idle',
 }
 
@@ -34,6 +38,12 @@ export function fetchWinner(name = '') {
 export function fetchWinPosition(item = []) {
   return new Promise<{ data: any }>((resolve) =>
     setTimeout(() => resolve({ data: item }), 500)
+  )
+}
+
+export function fetchScore(score = 0) {
+  return new Promise<{ data: number }>((resolve) =>
+    setTimeout(() => resolve({ data: score }), 500)
   )
 }
 
@@ -53,6 +63,14 @@ export const getWinPositionAsync = createAsyncThunk(
   }
 )
 
+export const getScore = createAsyncThunk(
+  'score/fetchScore',
+  async (score: number) => {
+    const response = await fetchScore(score)
+    return response.data
+  }
+)
+
 const winnerSlice = createSlice({
   name: 'winner',
   initialState,
@@ -62,6 +80,12 @@ const winnerSlice = createSlice({
     },
     getWinPosition: (state, action: PayloadAction<number[][]>) => {
       state.winPosition = action?.payload
+    },
+    getFirstPlayerScore: (state, action: PayloadAction<number>) => {
+      state.firstPlayerScore = action?.payload
+    },
+    getSecondPlayerScore: (state, action: PayloadAction<number>) => {
+      state.secondPlayerScore = action?.payload
     },
   },
   extraReducers: (builder) => {
@@ -80,10 +104,23 @@ const winnerSlice = createSlice({
         state.status = 'idle'
         state.winPosition = action.payload
       })
+      .addCase(getScore.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(getScore.fulfilled, (state, action) => {
+        state.status = 'idle'
+        state.firstPlayerScore = action?.payload
+        state.secondPlayerScore = action?.payload
+      })
   },
 })
 
-export const { getWinner, getWinPosition } = winnerSlice.actions
+export const {
+  getWinner,
+  getWinPosition,
+  getFirstPlayerScore,
+  getSecondPlayerScore,
+} = winnerSlice.actions
 export const selectWinner = (state: RootState) => state.winner
 
 export default winnerSlice.reducer

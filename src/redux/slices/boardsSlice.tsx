@@ -7,17 +7,15 @@ export interface StateType {
   turn: string
   isStart: boolean
   status: 'idle' | 'loading' | 'failed'
-  score: string
   drawGame: boolean
 }
 
 const initialState: StateType = {
   boards: Array(9).fill(''),
-  timer: '0',
+  timer: '5',
   turn: '',
   isStart: false,
   status: 'idle',
-  score: '0',
   drawGame: false,
 }
 
@@ -65,9 +63,6 @@ const boardsSlice = createSlice({
     setTurn: (state, action: PayloadAction<string>) => {
       state.turn = action.payload
     },
-    getScore: (state, action: PayloadAction<string>) => {
-      state.score = action.payload
-    },
     getDrawGame: (state) => {
       state.drawGame = true
     },
@@ -80,7 +75,7 @@ const boardsSlice = createSlice({
       .addCase(getPropAsync.fulfilled, (state, action) => {
         state.status = 'idle'
         state.turn = action.payload
-        state.score = action.payload
+        state.drawGame = true
       })
       .addCase(getBoardsAsync.pending, (state) => {
         state.status = 'loading'
@@ -92,14 +87,8 @@ const boardsSlice = createSlice({
   },
 })
 
-export const {
-  getTimer,
-  setTurn,
-  setStartGame,
-  getBoards,
-  getScore,
-  getDrawGame,
-} = boardsSlice.actions
+export const { getTimer, setTurn, setStartGame, getBoards, getDrawGame } =
+  boardsSlice.actions
 export const selectBoard = (state: RootState) => state.boards
 
 export default boardsSlice.reducer

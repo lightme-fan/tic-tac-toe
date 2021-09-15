@@ -27,7 +27,7 @@ function Home() {
         <>
           <form onSubmit={handleStartButton}>
             <Input
-              score={boardState.score}
+              // firstPlayerScore={boardState.score}
               iconSrc={roundIcon}
               alt={'Round'}
               value={firstPlayer}
@@ -37,7 +37,7 @@ function Home() {
               }
             />
             <Input
-              score={boardState.score}
+              // secondPlayerScore={boardState.score}
               iconSrc={crossIcon}
               value={secondPlayer}
               placeholder={'Leave empty to use AI or enter player name'}

@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 interface InputProps {
   iconSrc?: string
-  score?: string
+  firstPlayerScore?: string
+  secondPlayerScore?: string
   alt?: string
   value?: string
   placeholder: string
@@ -12,7 +13,8 @@ interface InputProps {
 
 const Input: React.FC<InputProps> = ({
   iconSrc,
-  score,
+  firstPlayerScore,
+  secondPlayerScore,
   alt,
   value,
   placeholder,
@@ -21,7 +23,8 @@ const Input: React.FC<InputProps> = ({
   return (
     <Label>
       <img src={iconSrc} alt={alt} />
-      {score !== '0' && <span>{score}</span>}
+      {firstPlayerScore !== '0' && <span>{firstPlayerScore}</span>}
+      {secondPlayerScore !== '0' && <span>{secondPlayerScore}</span>}
       <InputStyle
         type='text'
         value={value}
@@ -38,7 +41,7 @@ const Label = styled.label`
   gap: calc(39px / 2);
 
   img {
-    max-width: 24px;
+    max-width: 44px;
   }
 
   span {
@@ -49,8 +52,8 @@ const Label = styled.label`
 export const InputStyle = styled.input`
   width: 100%;
   border: none;
-  font-size: 1rem;
-  line-height: 36px;
+  font-size: 28px;
+  line-height: 58px;
 
   &:hover,
   &:focus {
