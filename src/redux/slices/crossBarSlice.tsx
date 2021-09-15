@@ -5,6 +5,7 @@ export interface PropType {
   isHorizontal: boolean
   isVertical: boolean
   isDiagonal: boolean
+  position: any
   status: 'idle' | 'loading' | 'failed'
 }
 
@@ -12,6 +13,7 @@ const initialState: PropType = {
   isHorizontal: false,
   isVertical: false,
   isDiagonal: false,
+  position: '0%',
   status: 'idle',
 }
 
@@ -34,13 +36,16 @@ const crossBarSlice = createSlice({
   initialState,
   reducers: {
     getHorizontal: (state) => {
-      state.isHorizontal = !state.isHorizontal
+      state.isHorizontal = true
     },
     getVertical: (state) => {
-      state.isVertical = !state.isVertical
+      state.isVertical = true
     },
     getDiagonal: (state) => {
-      state.isDiagonal = !state.isDiagonal
+      state.isDiagonal = true
+    },
+    getPosition: (state, action: PayloadAction<any>) => {
+      state.position = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -50,14 +55,16 @@ const crossBarSlice = createSlice({
       })
       .addCase(getCrossBarAsync.fulfilled, (state, action) => {
         state.status = 'idle'
-        state.isHorizontal = !state.isHorizontal
-        state.isVertical = !state.isVertical
-        state.isDiagonal = !state.isDiagonal
+        state.isHorizontal = true
+        state.isVertical = true
+        state.isDiagonal = true
+        state.position = action.payload
       })
   },
 })
 
-export const { getHorizontal, getVertical, getDiagonal } = crossBarSlice.actions
+export const { getHorizontal, getVertical, getDiagonal, getPosition } =
+  crossBarSlice.actions
 export const selectCrossBars = (state: RootState) => state.crossBars
 
 export default crossBarSlice.reducer

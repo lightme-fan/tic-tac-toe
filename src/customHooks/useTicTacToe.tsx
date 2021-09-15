@@ -12,6 +12,7 @@ import {
 import {
   getDiagonal,
   getHorizontal,
+  getPosition,
   getVertical,
   selectCrossBars,
 } from '../redux/slices/crossBarSlice'
@@ -49,6 +50,7 @@ function useTicTacToe() {
   )
   const [isVertical, setIsVertical] = useState<boolean>(crossBar.isVertical)
   const [isDiagonal, setIsDiagonal] = useState<boolean>(crossBar.isDiagonal)
+  const [position, setPosition] = useState(crossBar.position)
 
   function handleClickBoard(
     event: React.MouseEvent<HTMLButtonElement>,
@@ -93,37 +95,108 @@ function useTicTacToe() {
     }
   }
 
-  function setCrossBar() {
-    if (
-      (boards[0] === 'X' && boards[1] === 'X' && boards[2] === 'X') ||
-      (boards[3] === 'X' && boards[4] === 'X' && boards[5] === 'X') ||
-      (boards[6] === 'X' && boards[7] === 'X' && boards[8] === 'X') ||
-      (boards[0] === 'O' && boards[1] === 'O' && boards[2] === 'O') ||
-      (boards[3] === 'O' && boards[4] === 'O' && boards[5] === 'O') ||
-      (boards[6] === 'O' && boards[7] === 'O' && boards[8] === 'O')
-    ) {
-      setIsHorizontal(!isHorizontal)
+  function horizontalBar() {
+    if (boards[0] === 'X' && boards[1] === 'X' && boards[2] === 'X') {
+      setIsHorizontal(true)
       dispatch(getHorizontal())
+      setPosition('142px')
+      dispatch(getPosition('142px'))
     }
-    if (
-      (boards[0] === 'X' && boards[3] === 'X' && boards[6] === 'X') ||
-      (boards[1] === 'X' && boards[4] === 'X' && boards[7] === 'X') ||
-      (boards[2] === 'X' && boards[5] === 'X' && boards[8] === 'X') ||
-      (boards[0] === 'O' && boards[3] === 'O' && boards[6] === 'O') ||
-      (boards[1] === 'O' && boards[4] === 'O' && boards[7] === 'O') ||
-      (boards[2] === 'O' && boards[5] === 'O' && boards[8] === 'O')
-    ) {
-      setIsVertical(!isVertical)
+    if (boards[3] === 'X' && boards[4] === 'X' && boards[5] === 'X') {
+      setIsHorizontal(true)
+      dispatch(getHorizontal())
+      setPosition('245px')
+      dispatch(getPosition('245px'))
+    }
+    if (boards[6] === 'X' && boards[7] === 'X' && boards[8] === 'X') {
+      setIsHorizontal(true)
+      dispatch(getHorizontal())
+      setPosition('350px')
+      dispatch(getPosition('350px'))
+    }
+    if (boards[0] === 'O' && boards[1] === 'O' && boards[2] === 'O') {
+      setIsHorizontal(true)
+      dispatch(getHorizontal())
+      setPosition('142px')
+      dispatch(getPosition('142px'))
+    }
+    if (boards[3] === 'O' && boards[4] === 'O' && boards[5] === 'O') {
+      setIsHorizontal(true)
+      dispatch(getHorizontal())
+      setPosition('245px')
+      dispatch(getPosition('245px'))
+    }
+    if (boards[6] === 'O' && boards[7] === 'O' && boards[8] === 'O') {
+      setIsHorizontal(true)
+      dispatch(getHorizontal())
+      setPosition('350px')
+      dispatch(getPosition('350px'))
+    }
+  }
+
+  function verticalBar() {
+    if (boards[0] === 'X' && boards[3] === 'X' && boards[6] === 'X') {
+      setIsVertical(true)
       dispatch(getVertical())
+      setPosition('16%')
+      dispatch(getPosition('16%'))
     }
-    if (
-      (boards[0] === 'X' && boards[4] === 'X' && boards[8] === 'X') ||
-      (boards[2] === 'X' && boards[4] === 'X' && boards[6] === 'X') ||
-      (boards[0] === 'O' && boards[4] === 'O' && boards[8] === 'O') ||
-      (boards[2] === 'O' && boards[4] === 'O' && boards[6] === 'O')
-    ) {
-      setIsDiagonal(!isDiagonal)
+    if (boards[1] === 'X' && boards[4] === 'X' && boards[7] === 'X') {
+      setIsVertical(true)
+      dispatch(getVertical())
+      setPosition('50%')
+      dispatch(getPosition('50%'))
+    }
+    if (boards[2] === 'X' && boards[5] === 'X' && boards[8] === 'X') {
+      setIsVertical(true)
+      dispatch(getVertical())
+      setPosition('84%')
+      dispatch(getPosition('84%'))
+    }
+    if (boards[0] === 'O' && boards[3] === 'O' && boards[6] === 'O') {
+      setIsVertical(true)
+      dispatch(getVertical())
+      setPosition('16%')
+      dispatch(getPosition('18%'))
+    }
+    if (boards[1] === 'O' && boards[4] === 'O' && boards[7] === 'O') {
+      setIsVertical(true)
+      dispatch(getVertical())
+      setPosition('50%')
+      dispatch(getPosition('50%'))
+    }
+    if (boards[2] === 'O' && boards[5] === 'O' && boards[8] === 'O') {
+      setIsVertical(true)
+      dispatch(getVertical())
+      setPosition('84%')
+      dispatch(getPosition('84%'))
+    }
+  }
+
+  function diagonalBar() {
+    if (boards[0] === 'X' && boards[4] === 'X' && boards[8] === 'X') {
+      setIsDiagonal(true)
       dispatch(getDiagonal())
+      setPosition('-45deg')
+      dispatch(getPosition('-45deg'))
+    }
+    if (boards[2] === 'X' && boards[4] === 'X' && boards[6] === 'X') {
+      setIsDiagonal(true)
+      dispatch(getDiagonal())
+      setPosition('45deg')
+      dispatch(getPosition('45deg'))
+    }
+    if (boards[0] === 'O' && boards[4] === 'O' && boards[8] === 'O') {
+      setIsDiagonal(true)
+      dispatch(getDiagonal())
+      setPosition('-45deg')
+      dispatch(getPosition('-45deg'))
+    }
+    if (boards[2] === 'O' && boards[4] === 'O' && boards[6] === 'O') {
+      setIsDiagonal(true)
+      dispatch(getDiagonal())
+      setPosition('45deg')
+      dispatch(getPosition('45deg'))
     }
   }
 
@@ -137,7 +210,9 @@ function useTicTacToe() {
     }, 1000)
 
     winningFunc()
-    setCrossBar()
+    horizontalBar()
+    verticalBar()
+    diagonalBar()
 
     return () => {
       clearInterval(myInterval)
@@ -184,6 +259,7 @@ function useTicTacToe() {
     boardState,
     player,
     crossBar,
+    position,
     boards,
     winner,
     timing,

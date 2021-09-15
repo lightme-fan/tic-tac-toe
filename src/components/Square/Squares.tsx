@@ -9,6 +9,9 @@ interface PropType {
   disabled?: boolean
   crossBarStyle?: any
   crossBar?: any
+  leftPosition?: any
+  topPosition?: any
+  diagonalPosition?: any
 }
 
 const Squares: React.FC<PropType> = ({
@@ -16,43 +19,34 @@ const Squares: React.FC<PropType> = ({
   boards,
   disabled,
   crossBar,
-  crossBarStyle,
+  leftPosition,
+  topPosition,
+  diagonalPosition,
 }) => {
-  let barStyle: any | null = null
-  if (!crossBar.isVertical) {
-    barStyle = { height: '300px', width: '2px' }
-  }
-
-  console.log(crossBar)
-
   return (
-    <Fragment>
-      <SquareWrapper>
-        {boards.map((item, index) => {
-          return (
-            <div key={`${index}`}>
-              <Button
-                onClick={(e) => handleClick(e, index)}
-                value={item}
-                disabled={disabled}>
-                {item}
-              </Button>
-              {!crossBar.isHorizontal ||
-              !crossBar.isVertical ||
-              !crossBar.isDiagonal ? (
-                <div
-                  style={{
-                    height: '300px',
-                    width: '2px',
-                    background: '#000',
-                    position: 'absolute',
-                  }}></div>
-              ) : null}
-            </div>
-          )
-        })}
-      </SquareWrapper>
-    </Fragment>
+    <SquareWrapper>
+      {boards.map((item, index) => {
+        return (
+          <Board key={`${index}`}>
+            <Button
+              onClick={(e) => handleClick(e, index)}
+              value={item}
+              disabled={disabled}>
+              {item}
+            </Button>
+          </Board>
+        )
+      })}
+      {crossBar.isVertical === true ? (
+        <VerticalBar style={leftPosition}></VerticalBar>
+      ) : null}
+      {crossBar.isHorizontal === true ? (
+        <HorizontalBar style={topPosition}></HorizontalBar>
+      ) : null}
+      {crossBar.isDiagonal === true ? (
+        <DiagonalBar style={diagonalPosition}></DiagonalBar>
+      ) : null}
+    </SquareWrapper>
   )
 }
 
@@ -60,24 +54,22 @@ const SquareWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   width: 300px;
+`
 
-  div {
-    position: relative
-    border-bottom: 2px solid black;
+const Board = styled.div`
+  border-bottom: 2px solid black;
 
+  &:nth-child(7),
+  &:nth-of-type(8),
+  &:nth-of-type(9) {
+    border-bottom: none;
+  }
 
-    &:last-child,
-    &:nth-child(7),
-    &:nth-child(8) {
-      border-bottom: none;
-    }
-
-    &:nth-child(2),
-    &:nth-child(5),
-    &:nth-child(8) {
-      border-right: 2px solid black;
-      border-left: 2px solid black;
-    }
+  &:nth-child(2),
+  &:nth-child(5),
+  &:nth-child(8) {
+    border-right: 2px solid black;
+    border-left: 2px solid black;
   }
 `
 
@@ -95,4 +87,28 @@ const Button = styled.button`
   }
 `
 
+const VerticalBar = styled.div`
+  width: 2px;
+  height: 300px;
+  background: #000;
+  position: absolute;
+  top: 102px;
+`
+
+const HorizontalBar = styled.div`
+  width: 300px;
+  height: 2px;
+  background: #000;
+  position: absolute;
+  left: 0%;
+`
+
+const DiagonalBar = styled.div`
+  width: 2px;
+  height: 300px;
+  background: #000;
+  position: absolute;
+  top: 22%;
+  left: 153px;
+`
 export default Squares

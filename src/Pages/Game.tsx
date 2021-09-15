@@ -8,6 +8,7 @@ const Game = () => {
     boardState,
     player,
     crossBar,
+    position,
     boards,
     winner,
     timing,
@@ -36,6 +37,11 @@ const Game = () => {
         handleClick={handleClickBoard}
         boards={boards}
         crossBar={crossBar}
+        leftPosition={{ left: position }}
+        topPosition={{ top: position }}
+        diagonalPosition={{
+          transform: `rotate(${position})`,
+        }}
       />
       {winner || timing <= 0 ? (
         <Button
