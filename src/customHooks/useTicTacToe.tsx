@@ -10,6 +10,12 @@ import {
   getTimer,
 } from '../redux/slices/boardsSlice'
 import {
+  getDiagonal,
+  getHorizontal,
+  getVertical,
+  selectCrossBars,
+} from '../redux/slices/crossBarSlice'
+import {
   getButtonLabel,
   getFirstPlayers,
   getSecondPlayer,
@@ -21,6 +27,7 @@ function useTicTacToe() {
   const boardState = useSelector(selectBoard)
   const player = useSelector(selectPlayers)
   const winnerState = useSelector(selectWinner)
+  const crossBar = useSelector(selectCrossBars)
   const dispatch = useDispatch()
 
   let time = Number(boardState.timer)
@@ -37,6 +44,11 @@ function useTicTacToe() {
   const [winner, setWinner] = useState<string | null>(winnerState.winner)
   const [looser, setLooser] = useState<string>('')
   const [score, setScore] = useState<number>(Number(boardState.score))
+  const [isHorizontal, setIsHorizontal] = useState<boolean>(
+    crossBar.isHorizontal
+  )
+  const [isVertical, setIsVertical] = useState<boolean>(crossBar.isVertical)
+  const [isDiagonal, setIsDiagonal] = useState<boolean>(crossBar.isDiagonal)
 
   function handleClickBoard(
     event: React.MouseEvent<HTMLButtonElement>,
@@ -81,6 +93,40 @@ function useTicTacToe() {
     }
   }
 
+  function setCrossBar() {
+    if (
+      (boards[0] === 'X' && boards[1] === 'X' && boards[2] === 'X') ||
+      (boards[3] === 'X' && boards[4] === 'X' && boards[5] === 'X') ||
+      (boards[6] === 'X' && boards[7] === 'X' && boards[8] === 'X') ||
+      (boards[0] === 'O' && boards[1] === 'O' && boards[2] === 'O') ||
+      (boards[3] === 'O' && boards[4] === 'O' && boards[5] === 'O') ||
+      (boards[6] === 'O' && boards[7] === 'O' && boards[8] === 'O')
+    ) {
+      setIsHorizontal(!isHorizontal)
+      dispatch(getHorizontal())
+    }
+    if (
+      (boards[0] === 'X' && boards[3] === 'X' && boards[6] === 'X') ||
+      (boards[1] === 'X' && boards[4] === 'X' && boards[7] === 'X') ||
+      (boards[2] === 'X' && boards[5] === 'X' && boards[8] === 'X') ||
+      (boards[0] === 'O' && boards[3] === 'O' && boards[6] === 'O') ||
+      (boards[1] === 'O' && boards[4] === 'O' && boards[7] === 'O') ||
+      (boards[2] === 'O' && boards[5] === 'O' && boards[8] === 'O')
+    ) {
+      setIsVertical(!isVertical)
+      dispatch(getVertical())
+    }
+    if (
+      (boards[0] === 'X' && boards[4] === 'X' && boards[8] === 'X') ||
+      (boards[2] === 'X' && boards[4] === 'X' && boards[6] === 'X') ||
+      (boards[0] === 'O' && boards[4] === 'O' && boards[8] === 'O') ||
+      (boards[2] === 'O' && boards[4] === 'O' && boards[6] === 'O')
+    ) {
+      setIsDiagonal(!isDiagonal)
+      dispatch(getDiagonal())
+    }
+  }
+
   useEffect(() => {
     let myInterval = setInterval(() => {
       if (time > 0) {
@@ -91,6 +137,7 @@ function useTicTacToe() {
     }, 1000)
 
     winningFunc()
+    setCrossBar()
 
     return () => {
       clearInterval(myInterval)
@@ -136,6 +183,7 @@ function useTicTacToe() {
   return {
     boardState,
     player,
+    crossBar,
     boards,
     winner,
     timing,

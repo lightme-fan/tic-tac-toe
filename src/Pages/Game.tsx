@@ -7,11 +7,11 @@ const Game = () => {
   const {
     boardState,
     player,
+    crossBar,
     boards,
     winner,
     timing,
     turn,
-    looser,
     score,
     handleClickBoard,
     handleRestartButton,
@@ -32,7 +32,11 @@ const Game = () => {
       <h4>
         {heading} <span>{boardState.score === '0' ? '' : score}</span>
       </h4>
-      <Squares handleClick={handleClickBoard} boards={boards} />
+      <Squares
+        handleClick={handleClickBoard}
+        boards={boards}
+        crossBar={crossBar}
+      />
       {winner || timing <= 0 ? (
         <Button
           label={'Restart'}
@@ -49,6 +53,7 @@ const Gaming = styled.div`
   align-self: center;
   display: grid;
   gap: 30px;
+  position: relative;
 
   h4,
   p {

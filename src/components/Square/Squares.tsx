@@ -1,30 +1,58 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import styled from 'styled-components'
-
+import bar from '../../icons/isVertical.svg'
 interface PropType {
   index?: number
   handleClick(event: React.MouseEvent<HTMLButtonElement>, index: number): void
   value?: string
   boards: string[]
   disabled?: boolean
+  crossBarStyle?: any
+  crossBar?: any
 }
 
-const Squares: React.FC<PropType> = ({ handleClick, boards, disabled }) => {
+const Squares: React.FC<PropType> = ({
+  handleClick,
+  boards,
+  disabled,
+  crossBar,
+  crossBarStyle,
+}) => {
+  let barStyle: any | null = null
+  if (!crossBar.isVertical) {
+    barStyle = { height: '300px', width: '2px' }
+  }
+
+  console.log(crossBar)
+
   return (
-    <SquareWrapper>
-      {boards.map((item, index) => {
-        return (
-          <div key={`${index}`}>
-            <Button
-              onClick={(e) => handleClick(e, index)}
-              value={item}
-              disabled={disabled}>
-              {item}
-            </Button>
-          </div>
-        )
-      })}
-    </SquareWrapper>
+    <Fragment>
+      <SquareWrapper>
+        {boards.map((item, index) => {
+          return (
+            <div key={`${index}`}>
+              <Button
+                onClick={(e) => handleClick(e, index)}
+                value={item}
+                disabled={disabled}>
+                {item}
+              </Button>
+              {!crossBar.isHorizontal ||
+              !crossBar.isVertical ||
+              !crossBar.isDiagonal ? (
+                <div
+                  style={{
+                    height: '300px',
+                    width: '2px',
+                    background: '#000',
+                    position: 'absolute',
+                  }}></div>
+              ) : null}
+            </div>
+          )
+        })}
+      </SquareWrapper>
+    </Fragment>
   )
 }
 
@@ -34,7 +62,9 @@ const SquareWrapper = styled.div`
   width: 300px;
 
   div {
+    position: relative
     border-bottom: 2px solid black;
+
 
     &:last-child,
     &:nth-child(7),
