@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { fontSize } from '../../container/MainContainer'
 
 interface TimerProps {
   value: string
@@ -17,15 +18,13 @@ const Timer: React.FC<TimerProps> = ({ value, onChange }) => {
 
 const TimerStyle = styled.div`
   display: flex;
-  font-size: 28px;
-  line-height: 58px;
+  ${fontSize}
 
   input {
-    width: 30%;
+    width: 18%;
     margin-left: 10px;
     border: none;
-    font-size: 28px;
-    line-height: 58px;
+    ${fontSize}
 
     &:hover,
     &:focus {

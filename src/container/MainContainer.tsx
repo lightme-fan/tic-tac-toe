@@ -1,5 +1,14 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import Header from '../components/Header/Header'
+
+export const fontSize = css`
+  font-size: 28px;
+  line-height: 58px;
+  @media (max-width: 538px) {
+    font-size: 1rem;
+    line-height: 47px;
+  }
+`
 
 const MainContainer: React.FC = ({ children }) => {
   return (
@@ -25,6 +34,7 @@ const Wrapper = styled.div`
   gap: 44px;
 
   form {
+    max-width: 634px;
     width: 100%;
     align-self: center;
   }

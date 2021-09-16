@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { fontSize } from '../../container/MainContainer'
 
 interface ButtonProp {
   label: string
@@ -21,7 +22,7 @@ const ButtonStyle = styled.div`
     background-color: transparent;
     border: none;
     cursor: pointer;
-    font-size: 1rem;
+    ${fontSize}
   }
 `
 

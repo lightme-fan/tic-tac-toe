@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { fontSize } from '../../container/MainContainer'
 
 interface InputProps {
   iconSrc?: string
@@ -38,10 +39,14 @@ const Input: React.FC<InputProps> = ({
 const Label = styled.label`
   display: flex;
   flex-direction: row;
-  gap: calc(39px / 2);
+  gap: 2%;
 
   img {
     max-width: 44px;
+
+    @media (max-width: 538px) {
+      max-width: 22px;
+    }
   }
 
   span {
@@ -52,8 +57,7 @@ const Label = styled.label`
 export const InputStyle = styled.input`
   width: 100%;
   border: none;
-  font-size: 28px;
-  line-height: 58px;
+  ${fontSize}
 
   &:hover,
   &:focus {
