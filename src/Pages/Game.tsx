@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import Button from '../components/Button/Button'
 import Squares from '../components/Square/Squares'
+import { fontSize } from '../container/MainContainer'
 import useTicTacToe from '../customHooks/useTicTacToe'
 
 const Game = () => {
   const {
-    boardState,
     player,
     crossBar,
     position,
@@ -61,6 +61,13 @@ const Gaming = styled.div`
   display: grid;
   gap: 30px;
   position: relative;
+
+  h4 {
+    ${fontSize}
+    font-weight: 400;
+    margin: 0;
+    font-size: 24px;
+  }
 
   h4,
   p {

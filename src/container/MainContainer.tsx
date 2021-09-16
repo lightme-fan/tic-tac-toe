@@ -22,6 +22,16 @@ const MainContainer: React.FC = ({ children }) => {
 }
 
 const Container = styled.div`
+  @font-face {
+    font-family: 'Usuazi Hosomozi';
+    src: url('.../fonts/Usuazi-Hosomozi.woff2') format('woff2'),
+      url('.../fonts/Usuazi-Hosomozi.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  font-family: 'sans-serif';
   max-width: 900px;
   margin: auto;
   padding: 16px;
@@ -31,7 +41,7 @@ const Wrapper = styled.div`
   transition: all 1s ease-out;
   display: flex;
   flex-direction: column;
-  gap: 44px;
+  gap: 4px;
 
   form {
     max-width: 634px;
