@@ -42,6 +42,7 @@ function Home() {
               secondPlayerScore={secondPlayerScore.toString()}
               iconSrc={crossIcon}
               value={secondPlayer}
+              alt={'Cross'}
               placeholder={'Leave empty to use AI or enter player name'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSecondPlayer(e.target.value)

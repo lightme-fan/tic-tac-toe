@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -67,10 +67,10 @@ function useTicTacToe() {
   const handleStartButton = (event: any) => {
     event.preventDefault()
     timer === '0' && setTimer('5')
-    firstPlayer === '' && setFirstPlayer('X')
-    secondPlayer === '' && setSecondPlayer('O')
-    dispatch(getFirstPlayers(firstPlayer === '' ? 'X' : firstPlayer))
-    dispatch(getSecondPlayer(secondPlayer === '' ? 'O' : secondPlayer))
+    firstPlayer === '' && setFirstPlayer('O')
+    secondPlayer === '' && setSecondPlayer('X')
+    dispatch(getFirstPlayers(firstPlayer === '' ? 'O' : firstPlayer))
+    dispatch(getSecondPlayer(secondPlayer === '' ? 'X' : secondPlayer))
     dispatch(getTimer(timer === '0' ? '5' : timer))
     setTimeout(() => {
       dispatch(setStartGame())
@@ -120,7 +120,7 @@ function useTicTacToe() {
     }
 
     if (winner) {
-      setWinner(winner === 'X' ? player.first_player : player.second_player)
+      setWinner(winner === 'O' ? player.first_player : player.second_player)
       dispatch(getWinner(winner))
       setIsDisabled(true)
     }
