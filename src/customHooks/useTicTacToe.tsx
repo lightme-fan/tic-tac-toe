@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -40,6 +40,7 @@ function useTicTacToe() {
   const randomTurn = players[Math.floor(Math.random() * players.length)]
 
   const [isBoardFilled, setIsBoardFilled] = useState<boolean>(false)
+  const [isDisabled, setIsDisabled] = useState<boolean>(false)
 
   const [boards, setBoards] = useState(boardState.boards)
   const [firstPlayer, setFirstPlayer] = useState<string>(player.first_player)
@@ -81,7 +82,7 @@ function useTicTacToe() {
     index: number
   ) {
     if (index < 0 || index > 9 || winner) return
-    const newBoard = [...boards]
+    let newBoard = [...boards]
     newBoard.splice(index, 1, turn)
     setBoards(newBoard)
     dispatch(getBoards(newBoard))
@@ -121,6 +122,7 @@ function useTicTacToe() {
     if (winner) {
       setWinner(winner === 'X' ? player.first_player : player.second_player)
       dispatch(getWinner(winner))
+      setIsDisabled(true)
     }
   }
 
@@ -199,6 +201,7 @@ function useTicTacToe() {
       setIsDraw(true)
       dispatch(getDrawGame())
       setWinner('No winner')
+      setIsDisabled(true)
     }
   }
 
@@ -274,6 +277,9 @@ function useTicTacToe() {
         })
       }
     }, 1000)
+    if (timing <= 0) {
+      setIsDisabled(true)
+    }
 
     winningFunc()
     horizontalLine()
@@ -300,6 +306,7 @@ function useTicTacToe() {
   ])
 
   return {
+    isDisabled,
     boardState,
     player,
     crossBar,

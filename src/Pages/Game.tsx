@@ -6,6 +6,7 @@ import useTicTacToe from '../customHooks/useTicTacToe'
 
 const Game = () => {
   const {
+    isDisabled,
     player,
     crossBar,
     position,
@@ -49,6 +50,7 @@ const Game = () => {
         diagonalPosition={{
           transform: `rotate(${position})`,
         }}
+        disabled={isDisabled}
       />
       {winner ||
       timing <= 0 ||
