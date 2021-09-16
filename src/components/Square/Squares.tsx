@@ -107,7 +107,7 @@ const DiagonalBar = styled.div`
   height: 300px;
   background: #000;
   position: absolute;
-  top: 22%;
+  top: 18%;
   left: 153px;
 `
 export default Squares

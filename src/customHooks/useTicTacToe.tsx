@@ -39,6 +39,8 @@ function useTicTacToe() {
   let players = ['X', 'O']
   const randomTurn = players[Math.floor(Math.random() * players.length)]
 
+  const [isBoardFilled, setIsBoardFilled] = useState<boolean>(false)
+
   const [boards, setBoards] = useState(boardState.boards)
   const [firstPlayer, setFirstPlayer] = useState<string>(player.first_player)
   const [secondPlayer, setSecondPlayer] = useState<string>(player.second_player)
@@ -87,10 +89,18 @@ function useTicTacToe() {
     setTiming(time)
   }
 
+  function isSquaresFilled(squares: any) {
+    for (let i = 0; i < squares.length; i++) {
+      if (squares[i] === '') {
+        return false
+      }
+    }
+    return true
+  }
+
   function winningFunc() {
     let winningPositionsIndex = 0
     let winner: string | null = ''
-    let isDraw: boolean = false
 
     while (winningPositionsIndex < winnerState.winPosition.length && !winner) {
       const boardPositionsToCheck =
@@ -104,16 +114,6 @@ function useTicTacToe() {
         (value) => value === checkingValue && checkingValue
       )
 
-      const drawGame = new Set(boardValuesToCheck).size !== 1
-      if (
-        boardValuesToCheck[0] !== '' &&
-        boardValuesToCheck[1] !== '' &&
-        boardValuesToCheck[2] !== '' &&
-        drawGame === true
-      ) {
-        isDraw = true
-      }
-
       winner = !isFinished ? null : checkingValue
       winningPositionsIndex++
     }
@@ -122,13 +122,9 @@ function useTicTacToe() {
       setWinner(winner === 'X' ? player.first_player : player.second_player)
       dispatch(getWinner(winner))
     }
-    if (isDraw === true) {
-      setIsDraw(true)
-      dispatch(getDrawGame())
-    }
   }
 
-  function horizontalBar() {
+  function horizontalLine() {
     if (boards[0] === 'X' && boards[1] === 'X' && boards[2] === 'X') {
       setIsHorizontal(true)
       dispatch(getHorizontal(true))
@@ -162,7 +158,7 @@ function useTicTacToe() {
     }
   }
 
-  function verticalBar() {
+  function verticalLine() {
     if (boards[0] === 'X' && boards[3] === 'X' && boards[6] === 'X') {
       setIsVertical(true)
       dispatch(getVertical(true))
@@ -196,7 +192,17 @@ function useTicTacToe() {
     }
   }
 
-  function diagonalBar() {
+  function drawGame() {
+    const squares = isSquaresFilled(boards)
+    if (squares) {
+      setIsBoardFilled(true)
+      setIsDraw(true)
+      dispatch(getDrawGame())
+      setWinner('No winner')
+    }
+  }
+
+  function diagonalLine() {
     if (boards[0] === 'X' && boards[4] === 'X' && boards[8] === 'X') {
       setIsDiagonal(true)
       dispatch(getDiagonal(true))
@@ -222,22 +228,35 @@ function useTicTacToe() {
 
   function handleRestartButton(heading: string) {
     dispatch(setStartGame())
-    dispatch(getTimer(timing.toString()))
+
     setBoards(Array(9).fill(''))
     dispatch(getBoards(Array(9).fill('')))
     dispatch(getButtonLabel('Play again'))
+
     setWinner('')
     dispatch(getWinner(''))
+
     setIsHorizontal(false)
     setIsVertical(false)
     setIsDiagonal(false)
     dispatch(getHorizontal(false))
     dispatch(getVertical(false))
     dispatch(getDiagonal(false))
+
     setTiming(time)
     heading = `${
       turn === 'X' ? player.first_player : player.second_player
     }'s turn`
+    dispatch(getTimer(timing.toString()))
+
+    if (winner === 'X') {
+      setFirstPlayerScore((score) => score + 1)
+      dispatch(getFirstPlayerScore(firstPlayerScore))
+    }
+    if (winner === 'O') {
+      setSecondPlayerScore((score) => score + 1)
+      dispatch(getSecondPlayerScore(secondPlayerScore))
+    }
   }
 
   const handleRebootBtn = () => {
@@ -255,14 +274,17 @@ function useTicTacToe() {
         })
       }
     }, 1000)
+
     winningFunc()
-    horizontalBar()
-    verticalBar()
-    diagonalBar()
+    horizontalLine()
+    verticalLine()
+    diagonalLine()
+    drawGame()
 
     return () => {
       clearInterval(myInterval)
     }
+    // eslint-disable-next-line
   }, [
     boards,
     turn,
@@ -286,11 +308,14 @@ function useTicTacToe() {
     winner,
     winnerState,
     timing,
+    isBoardFilled,
     isDraw,
     turn,
     firstPlayer,
     setFirstPlayer,
     secondPlayer,
+    firstPlayerScore,
+    secondPlayerScore,
     timer,
     setTimer,
     setSecondPlayer,

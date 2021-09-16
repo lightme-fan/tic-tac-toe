@@ -15,6 +15,8 @@ function Home() {
     setFirstPlayer,
     secondPlayer,
     timer,
+    firstPlayerScore,
+    secondPlayerScore,
     setTimer,
     setSecondPlayer,
     handleStartButton,
@@ -27,7 +29,7 @@ function Home() {
         <>
           <form onSubmit={handleStartButton}>
             <Input
-              // firstPlayerScore={boardState.score}
+              firstPlayerScore={firstPlayerScore.toString()}
               iconSrc={roundIcon}
               alt={'Round'}
               value={firstPlayer}
@@ -37,7 +39,7 @@ function Home() {
               }
             />
             <Input
-              // secondPlayerScore={boardState.score}
+              secondPlayerScore={secondPlayerScore.toString()}
               iconSrc={crossIcon}
               value={secondPlayer}
               placeholder={'Leave empty to use AI or enter player name'}

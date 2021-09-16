@@ -9,6 +9,8 @@ const Game = () => {
     player,
     crossBar,
     position,
+    isBoardFilled,
+    isDraw,
     boards,
     winner,
     timing,
@@ -29,6 +31,10 @@ const Game = () => {
     heading = `${winner} won the game !`
   }
 
+  if (isBoardFilled === true && isDraw === true && winner === 'No winner') {
+    heading = `It's a draw !`
+  }
+
   return (
     <Gaming>
       <h4>
@@ -44,7 +50,9 @@ const Game = () => {
           transform: `rotate(${position})`,
         }}
       />
-      {winner || timing <= 0 ? (
+      {winner ||
+      timing <= 0 ||
+      (isBoardFilled === true && isDraw === true && winner === 'No winner') ? (
         <Button
           label={'Restart'}
           onClick={() => handleRestartButton(heading)}
