@@ -17,7 +17,7 @@
   - Timer for each player
   - Start button
 - Playing the game:
-  - Winning: if the one the players have clicked 3 squares which either in a raw, column or diagonal.
+  - Winning: if one of the players has clicked 3 squares which either in a raw, column or diagonal.
   - If one of the players runs out of time, the other player wins.
   - If the boards are filled and none won, it's a draw.
 - Restart button to get back to the Setting up game
