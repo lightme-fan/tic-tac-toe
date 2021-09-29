@@ -6,6 +6,7 @@ export interface PropType {
   isVertical: boolean
   isDiagonal: boolean
   position: any
+  // status is unused in all slices - remove
   status: 'idle' | 'loading' | 'failed'
 }
 
@@ -48,6 +49,9 @@ const crossBarSlice = createSlice({
       state.position = action.payload
     },
   },
+
+
+  // dont think this is necessary all actions could be synchronous
   extraReducers: (builder) => {
     builder
       .addCase(getCrossBarAsync.pending, (state) => {
@@ -55,6 +59,7 @@ const crossBarSlice = createSlice({
       })
       .addCase(getCrossBarAsync.fulfilled, (state, action) => {
         state.status = 'idle'
+        // dont understand why everything is assigned the same value
         state.isHorizontal = action.payload
         state.isVertical = action.payload
         state.isDiagonal = action.payload

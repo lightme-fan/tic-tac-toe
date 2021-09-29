@@ -204,7 +204,8 @@ function useTicTacToe() {
       setIsDisabled(true)
     }
   }
-
+// x and o should be an enum 
+// could be refactored as there is a duplication pass X or O as an argument
   function diagonalLine() {
     if (boards[0] === 'X' && boards[4] === 'X' && boards[8] === 'X') {
       setIsDiagonal(true)

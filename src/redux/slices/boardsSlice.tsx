@@ -6,11 +6,13 @@ export interface StateType {
   timer: string
   turn: string
   isStart: boolean
+  //status is unused
   status: 'idle' | 'loading' | 'failed'
   drawGame: boolean
 }
 
 const initialState: StateType = {
+  // there is only single board no 's'
   boards: Array(9).fill(''),
   timer: '5',
   turn: '',

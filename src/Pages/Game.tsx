@@ -19,7 +19,7 @@ const Game = () => {
     handleClickBoard,
     handleRestartButton,
   } = useTicTacToe()
-
+// should be extracted to pure function getHeading(player,etc): string
   let heading = `${
     turn === 'X' ? player.first_player : player.second_player
   }'s turn`

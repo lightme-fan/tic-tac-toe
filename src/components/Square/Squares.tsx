@@ -30,6 +30,7 @@ const Squares: React.FC<PropType> = ({
             <Button
               onClick={(e) => handleClick(e, index)}
               value={item}
+              // this could be just disabled={disabled}
               disabled={disabled === true ? true : false}>
               {item}
             </Button>
