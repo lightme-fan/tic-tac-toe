@@ -33,6 +33,7 @@ const playersSlice = createSlice({
   name: 'players',
   initialState,
   reducers: {
+       // those should be rather 'set' then 'get'
     getFirstPlayers: (state, action: PayloadAction<string>) => {
       state.first_player = action?.payload
     },
@@ -43,6 +44,8 @@ const playersSlice = createSlice({
       state.buttonLabel = action.payload
     },
   },
+
+  // dont think this is necessary all actions could be synchronous
   extraReducers: (builder) => {
     builder
       .addCase(getPLayersAsync.pending, (state) => {

@@ -28,7 +28,7 @@ const initialState: PropType = {
   secondPlayerScore: 0,
   status: 'idle',
 }
-
+// fetch ? do not understand why we need those delays
 export function fetchWinner(name = '') {
   return new Promise<{ data: string }>((resolve) =>
     setTimeout(() => resolve({ data: name }), 500)
@@ -75,6 +75,7 @@ const winnerSlice = createSlice({
   name: 'winner',
   initialState,
   reducers: {
+    // those should be rather 'set' then 'get'
     getWinner: (state, action: PayloadAction<string>) => {
       state.winner = action?.payload
     },
@@ -88,6 +89,7 @@ const winnerSlice = createSlice({
       state.secondPlayerScore = action?.payload
     },
   },
+  // dont think this is necessary all actions could be synchronous
   extraReducers: (builder) => {
     builder
       .addCase(getWinnerAsync.pending, (state) => {
