@@ -30,7 +30,7 @@ const Squares: React.FC<PropType> = ({
             <Button
               onClick={(e) => handleClick(e, index)}
               value={item}
-              disabled={disabled}>
+              disabled={disabled === true ? true : false}>
               {item}
             </Button>
           </Board>
@@ -84,30 +84,38 @@ const Button = styled.button`
   &:focus {
     outline: none;
   }
+
+  &[disabled]{
+    color: #000;
+    cursor: default;
+  }
 `
 
 const VerticalBar = styled.div`
-  width: 2px;
-  height: 300px;
+  width: 4px;
+  height: 344px;
   background: #000;
   position: absolute;
   top: 102px;
+  background-color: green;
 `
 
 const HorizontalBar = styled.div`
-  width: 300px;
-  height: 2px;
+  width: 344px;
+  height: 4px;
   background: #000;
   position: absolute;
-  left: 0%;
+  left: -7%;
+  background-color: green;
 `
 
 const DiagonalBar = styled.div`
-  width: 2px;
-  height: 300px;
+  width: 4px;
+  height: 344px;
   background: #000;
   position: absolute;
   top: 18%;
   left: 153px;
+  background-color: green;
 `
 export default Squares

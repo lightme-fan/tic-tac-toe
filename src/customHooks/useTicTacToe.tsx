@@ -40,6 +40,7 @@ function useTicTacToe() {
   const randomTurn = players[Math.floor(Math.random() * players.length)]
 
   const [isBoardFilled, setIsBoardFilled] = useState<boolean>(false)
+  const [isDisabled, setIsDisabled] = useState<boolean>(false)
 
   const [boards, setBoards] = useState(boardState.boards)
   const [firstPlayer, setFirstPlayer] = useState<string>(player.first_player)
@@ -66,10 +67,10 @@ function useTicTacToe() {
   const handleStartButton = (event: any) => {
     event.preventDefault()
     timer === '0' && setTimer('5')
-    firstPlayer === '' && setFirstPlayer('X')
-    secondPlayer === '' && setSecondPlayer('O')
-    dispatch(getFirstPlayers(firstPlayer === '' ? 'X' : firstPlayer))
-    dispatch(getSecondPlayer(secondPlayer === '' ? 'O' : secondPlayer))
+    firstPlayer === '' && setFirstPlayer('O')
+    secondPlayer === '' && setSecondPlayer('X')
+    dispatch(getFirstPlayers(firstPlayer === '' ? 'O' : firstPlayer))
+    dispatch(getSecondPlayer(secondPlayer === '' ? 'X' : secondPlayer))
     dispatch(getTimer(timer === '0' ? '5' : timer))
     setTimeout(() => {
       dispatch(setStartGame())
@@ -81,12 +82,14 @@ function useTicTacToe() {
     index: number
   ) {
     if (index < 0 || index > 9 || winner) return
-    const newBoard = [...boards]
+    let newBoard = [...boards]
     newBoard.splice(index, 1, turn)
     setBoards(newBoard)
     dispatch(getBoards(newBoard))
     setTurn(turn === 'X' ? 'O' : 'X')
     setTiming(time)
+    return event.currentTarget.disabled = true
+
   }
 
   function isSquaresFilled(squares: any) {
@@ -119,110 +122,86 @@ function useTicTacToe() {
     }
 
     if (winner) {
-      setWinner(winner === 'X' ? player.first_player : player.second_player)
+      setWinner(winner === 'O' ? player.first_player : player.second_player)
       dispatch(getWinner(winner))
+      setIsDisabled(true)
     }
+  }
+
+  function horizontal(positionValue: string) {
+    setIsHorizontal(true)
+    dispatch(getHorizontal(true))
+    setPosition(positionValue)
+    dispatch(getPosition(positionValue))
+  }
+
+  function vertical(positionValue: string) {
+    setIsVertical(true)
+      dispatch(getVertical(true))
+      setPosition(positionValue)
+      dispatch(getPosition(positionValue))
+  }
+
+  function diagonal(positionValue: string) {
+    setIsDiagonal(true)
+    dispatch(getDiagonal(true))
+    setPosition(positionValue)
+    dispatch(getPosition(positionValue))
   }
 
   function horizontalLine() {
     if (boards[0] === 'X' && boards[1] === 'X' && boards[2] === 'X') {
-      setIsHorizontal(true)
-      dispatch(getHorizontal(true))
-      setPosition('142px')
-      dispatch(getPosition('142px'))
+      horizontal('167px')
     } else if (boards[3] === 'X' && boards[4] === 'X' && boards[5] === 'X') {
-      setIsHorizontal(true)
-      dispatch(getHorizontal(true))
-      setPosition('245px')
-      dispatch(getPosition('245px'))
+      horizontal('268px')
     } else if (boards[6] === 'X' && boards[7] === 'X' && boards[8] === 'X') {
-      setIsHorizontal(true)
-      dispatch(getHorizontal(true))
-      setPosition('350px')
-      dispatch(getPosition('350px'))
+      horizontal('375px')
     } else if (boards[0] === 'O' && boards[1] === 'O' && boards[2] === 'O') {
-      setIsHorizontal(true)
-      dispatch(getHorizontal(true))
-      setPosition('142px')
-      dispatch(getPosition('142px'))
+      horizontal('167px')
     } else if (boards[3] === 'O' && boards[4] === 'O' && boards[5] === 'O') {
-      setIsHorizontal(true)
-      dispatch(getHorizontal(true))
-      setPosition('245px')
-      dispatch(getPosition('245px'))
+      horizontal('268px')
     } else if (boards[6] === 'O' && boards[7] === 'O' && boards[8] === 'O') {
-      setIsHorizontal(true)
-      dispatch(getHorizontal(true))
-      setPosition('350px')
-      dispatch(getPosition('350px'))
+      horizontal('375px')
     }
   }
 
   function verticalLine() {
     if (boards[0] === 'X' && boards[3] === 'X' && boards[6] === 'X') {
-      setIsVertical(true)
-      dispatch(getVertical(true))
-      setPosition('16%')
-      dispatch(getPosition('16%'))
+      vertical('16%')
     } else if (boards[1] === 'X' && boards[4] === 'X' && boards[7] === 'X') {
-      setIsVertical(true)
-      dispatch(getVertical(true))
-      setPosition('50%')
-      dispatch(getPosition('50%'))
+      vertical('50%')
     } else if (boards[2] === 'X' && boards[5] === 'X' && boards[8] === 'X') {
-      setIsVertical(true)
-      dispatch(getVertical(true))
-      setPosition('84%')
-      dispatch(getPosition('84%'))
+      vertical('84%')
     } else if (boards[0] === 'O' && boards[3] === 'O' && boards[6] === 'O') {
-      setIsVertical(true)
-      dispatch(getVertical(true))
-      setPosition('16%')
-      dispatch(getPosition('18%'))
+      vertical('16%')      
     } else if (boards[1] === 'O' && boards[4] === 'O' && boards[7] === 'O') {
-      setIsVertical(true)
-      dispatch(getVertical(true))
-      setPosition('50%')
-      dispatch(getPosition('50%'))
+      vertical('50%')
     } else if (boards[2] === 'O' && boards[5] === 'O' && boards[8] === 'O') {
-      setIsVertical(true)
-      dispatch(getVertical(true))
-      setPosition('84%')
-      dispatch(getPosition('84%'))
-    }
-  }
-
-  function drawGame() {
-    const squares = isSquaresFilled(boards)
-    if (squares) {
-      setIsBoardFilled(true)
-      setIsDraw(true)
-      dispatch(getDrawGame())
-      setWinner('No winner')
+      vertical('84%')
     }
   }
 
   function diagonalLine() {
     if (boards[0] === 'X' && boards[4] === 'X' && boards[8] === 'X') {
-      setIsDiagonal(true)
-      dispatch(getDiagonal(true))
-      setPosition('-45deg')
-      dispatch(getPosition('-45deg'))
+      diagonal('-45deg')
     } else if (boards[2] === 'X' && boards[4] === 'X' && boards[6] === 'X') {
-      setIsDiagonal(true)
-      dispatch(getDiagonal(true))
-      setPosition('45deg')
-      dispatch(getPosition('45deg'))
+      diagonal('45deg')
     } else if (boards[0] === 'O' && boards[4] === 'O' && boards[8] === 'O') {
-      setIsDiagonal(true)
-      dispatch(getDiagonal(true))
-      setPosition('-45deg')
-      dispatch(getPosition('-45deg'))
+      diagonal('-45deg')
     } else if (boards[2] === 'O' && boards[4] === 'O' && boards[6] === 'O') {
-      setIsDiagonal(true)
-      dispatch(getDiagonal(true))
-      setPosition('45deg')
-      dispatch(getPosition('45deg'))
+      diagonal('45deg')
+    }
+  }
+
+  function drawGame() {
+    const squares = isSquaresFilled(boards)
+    
+    if (squares && winner === '') {
+      setIsBoardFilled(true)
+      setIsDraw(true)
+      dispatch(getDrawGame())
+      setWinner('No winner')
+      setIsDisabled(true)
     }
   }
 
@@ -275,6 +254,10 @@ function useTicTacToe() {
       }
     }, 1000)
 
+    if (timing <= 0) {
+      setIsDisabled(true)
+    }
+
     winningFunc()
     horizontalLine()
     verticalLine()
@@ -300,6 +283,7 @@ function useTicTacToe() {
   ])
 
   return {
+    isDisabled,
     boardState,
     player,
     crossBar,

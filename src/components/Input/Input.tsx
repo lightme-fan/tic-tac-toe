@@ -58,6 +58,7 @@ export const InputStyle = styled.input`
   width: 100%;
   border: none;
   ${fontSize}
+  text-overflow: ellipsis;
 
   &:hover,
   &:focus {

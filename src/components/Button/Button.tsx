@@ -22,7 +22,7 @@ const ButtonStyle = styled.div`
     background-color: transparent;
     border: none;
     cursor: pointer;
-    ${fontSize}
+    ${fontSize};
   }
 `
 

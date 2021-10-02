@@ -33,7 +33,7 @@ function Home() {
               iconSrc={roundIcon}
               alt={'Round'}
               value={firstPlayer}
-              placeholder={'Leave empty to use AI or enter player name'}
+              placeholder={'Leave empty to use a default name or enter player name'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setFirstPlayer(e.target.value)
               }
@@ -42,15 +42,18 @@ function Home() {
               secondPlayerScore={secondPlayerScore.toString()}
               iconSrc={crossIcon}
               value={secondPlayer}
-              placeholder={'Leave empty to use AI or enter player name'}
+              alt={'Cross'}
+              placeholder={'Leave empty to use a default name or enter player name'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSecondPlayer(e.target.value)
               }
             />
             <Timer
               value={timer}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setTimer(e.target.value)
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  const time = Number(e.target.value) < 1 ? 1 : e.target.value
+                  setTimer(time.toString())
+                }
               }
             />
             <Button label={player.buttonLabel} />

@@ -6,6 +6,7 @@ import useTicTacToe from '../customHooks/useTicTacToe'
 
 const Game = () => {
   const {
+    isDisabled,
     player,
     crossBar,
     position,
@@ -20,7 +21,7 @@ const Game = () => {
   } = useTicTacToe()
 
   let heading = `${
-    turn === 'X' ? player.first_player : player.second_player
+    turn === 'X' ? player.second_player : player.first_player
   }'s turn`
   if (timing <= 0) {
     heading = `Time out - ${
@@ -49,6 +50,7 @@ const Game = () => {
         diagonalPosition={{
           transform: `rotate(${position})`,
         }}
+        disabled={isDisabled}
       />
       {winner ||
       timing <= 0 ||
@@ -70,18 +72,19 @@ const Gaming = styled.div`
   gap: 30px;
   position: relative;
 
-  h4 {
+  h4, p {
     ${fontSize}
     font-weight: 400;
     margin: 0;
-    font-size: 24px;
-  }
-
-  h4,
-  p {
     text-align: center;
   }
-
+  
+  p {
+    font-size: 37px;
+    line-height: 50px;
+    text-align: center;
+    margin: 0
+  }
   img {
     width: 300px;
   }

@@ -11,8 +11,7 @@ const Timer: React.FC<TimerProps> = ({ value, onChange }) => {
   return (
     <TimerStyle>
       <span>Turn time limit in seconds:</span>
-      <input type='text' value={value} onChange={onChange} />
-      <SecondUnit>s</SecondUnit>
+      <input type='number' value={value} onChange={onChange} />
     </TimerStyle>
   )
 }
@@ -23,7 +22,7 @@ const TimerStyle = styled.div`
   position: relative;
 
   input {
-    width: 18%;
+    width: 8%;
     margin-left: 10px;
     border: none;
     ${fontSize}
@@ -33,15 +32,6 @@ const TimerStyle = styled.div`
     &:focus {
       outline: none;
     }
-  }
-`
-const SecondUnit = styled.span`
-  position: absolute;
-  left: 352px;
-  color: #8b8585;
-
-  @media (max-width: 538px) {
-    left: 222px;
   }
 `
 

@@ -2,11 +2,12 @@ import styled, { css } from 'styled-components'
 import Header from '../components/Header/Header'
 
 export const fontSize = css`
-  font-size: 28px;
-  line-height: 58px;
+  font-size: 37px;
+  line-height: 92px;
+
   @media (max-width: 538px) {
-    font-size: 1rem;
-    line-height: 47px;
+    font-size: 24px;
+    line-height: 72px;
   }
 `
 
