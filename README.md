@@ -8,6 +8,13 @@
 
 [lightme-fan/Tic-tac-toe](https://github.com/lightme-fan/tic-tac-toe)
 
+## A demo video
+https://user-images.githubusercontent.com/60210180/145177233-866193d4-3ef1-491e-afef-168de64beb4d.mp4
+
+## A screenshot
+![tic-tac-toe](https://user-images.githubusercontent.com/60210180/145177455-3c270c44-2bf1-4559-a028-9a2141485774.png)
+
+
 ## Features
 - Human vs human
 - Setting the game up:
