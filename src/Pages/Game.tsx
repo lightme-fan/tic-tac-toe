@@ -35,7 +35,7 @@ const Game = () => {
   if (isBoardFilled === true && isDraw === true && winner === 'No winner') {
     heading = `It's a draw !`
   }
-
+  
   return (
     <Gaming>
       <h4>
