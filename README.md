@@ -14,6 +14,11 @@ https://user-images.githubusercontent.com/60210180/145177233-866193d4-3ef1-491e-
 ## A screenshot
 ![tic-tac-toe](https://user-images.githubusercontent.com/60210180/145177455-3c270c44-2bf1-4559-a028-9a2141485774.png)
 
+## Used technologies
+- React
+- Typescript
+- Styled-components
+- Redux
 
 ## Features
 - Human vs human
