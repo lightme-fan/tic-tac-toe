@@ -9,13 +9,11 @@
 [lightme-fan/Tic-tac-toe](https://github.com/lightme-fan/tic-tac-toe)
 
 ## Features
-
 - Human vs human
-
 - Setting the game up:
   - Two players
-  - Timer for each player
-  - Start button
+  - Set timer for each player
+  - Click Start button
 - Playing the game:
   - Winning: if one of the players has clicked 3 squares which either in a raw, column or diagonal.
   - If one of the players runs out of time, the other player wins.
