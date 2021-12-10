@@ -1,5 +1,6 @@
 import React from 'react'
-import styled from 'styled-components'
+import { SquareWrapper, Board, Button, VerticalBar, HorizontalBar, DiagonalBar } from './SquareStyles';
+
 interface PropType {
   index?: number
   handleClick(event: React.MouseEvent<HTMLButtonElement>, index: number): void
@@ -31,7 +32,7 @@ const Squares: React.FC<PropType> = ({
               onClick={(e) => handleClick(e, index)}
               value={item}
               disabled={disabled === true ? true : false}>
-              {item}
+              {item.split('')[0]}
             </Button>
           </Board>
         )
@@ -49,73 +50,5 @@ const Squares: React.FC<PropType> = ({
   )
 }
 
-const SquareWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  width: 300px;
-`
 
-const Board = styled.div`
-  border-bottom: 2px solid black;
-
-  &:nth-child(7),
-  &:nth-of-type(8),
-  &:nth-of-type(9) {
-    border-bottom: none;
-  }
-
-  &:nth-child(2),
-  &:nth-child(5),
-  &:nth-child(8) {
-    border-right: 2px solid black;
-    border-left: 2px solid black;
-  }
-`
-
-const Button = styled.button`
-  width: 100px;
-  height: 100px;
-  font-size: 46px;
-  border: none;
-  cursor: pointer;
-  background-color: transparent;
-
-  &:hover,
-  &:focus {
-    outline: none;
-  }
-
-  &[disabled]{
-    color: #000;
-    cursor: default;
-  }
-`
-
-const VerticalBar = styled.div`
-  width: 4px;
-  height: 344px;
-  background: #000;
-  position: absolute;
-  top: 102px;
-  background-color: green;
-`
-
-const HorizontalBar = styled.div`
-  width: 344px;
-  height: 4px;
-  background: #000;
-  position: absolute;
-  left: -7%;
-  background-color: green;
-`
-
-const DiagonalBar = styled.div`
-  width: 4px;
-  height: 344px;
-  background: #000;
-  position: absolute;
-  top: 18%;
-  left: 153px;
-  background-color: green;
-`
 export default Squares

@@ -38,7 +38,7 @@ function useTicTacToe() {
   let time = Number(boardState.timer)
   let players = ['X', 'O']
   const randomTurn = players[Math.floor(Math.random() * players.length)]
-
+ 
   const [isBoardFilled, setIsBoardFilled] = useState<boolean>(false)
   const [isDisabled, setIsDisabled] = useState<boolean>(false)
 
@@ -64,13 +64,13 @@ function useTicTacToe() {
   const [isDiagonal, setIsDiagonal] = useState<boolean>(crossBar.isDiagonal)
   const [position, setPosition] = useState(crossBar.position)
 
-  const handleStartButton = (event: any) => {
+  const handleStartButton = (event: React.FormEvent) => {
     event.preventDefault()
     timer === '0' && setTimer('5')
-    firstPlayer === '' && setFirstPlayer('O')
-    secondPlayer === '' && setSecondPlayer('X')
-    dispatch(getFirstPlayers(firstPlayer === '' ? 'O' : firstPlayer))
-    dispatch(getSecondPlayer(secondPlayer === '' ? 'X' : secondPlayer))
+    firstPlayer === '' && setFirstPlayer('X')
+    secondPlayer === '' && setSecondPlayer('O')
+    dispatch(getFirstPlayers(firstPlayer === '' ? 'X' : firstPlayer))
+    dispatch(getSecondPlayer(secondPlayer === '' ? 'O' : secondPlayer))
     dispatch(getTimer(timer === '0' ? '5' : timer))
     setTimeout(() => {
       dispatch(setStartGame())
@@ -92,7 +92,7 @@ function useTicTacToe() {
 
   }
 
-  function isSquaresFilled(squares: any) {
+  function isSquaresFilled(squares: string[]) {
     for (let i = 0; i < squares.length; i++) {
       if (squares[i] === '') {
         return false
@@ -122,7 +122,7 @@ function useTicTacToe() {
     }
 
     if (winner) {
-      setWinner(winner === 'O' ? player.first_player : player.second_player)
+      setWinner(winner === 'X' ? player.first_player : player.second_player)
       dispatch(getWinner(winner))
       setIsDisabled(true)
     }
@@ -281,7 +281,7 @@ function useTicTacToe() {
     isDiagonal,
     isVertical,
   ])
-
+  
   return {
     isDisabled,
     boardState,

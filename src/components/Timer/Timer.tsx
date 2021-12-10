@@ -1,6 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
-import { fontSize } from '../../container/MainContainer'
+import { TimerStyle } from './TimerStyles' 
 
 interface TimerProps {
   value: string
@@ -15,24 +14,5 @@ const Timer: React.FC<TimerProps> = ({ value, onChange }) => {
     </TimerStyle>
   )
 }
-
-const TimerStyle = styled.div`
-  display: flex;
-  ${fontSize}
-  position: relative;
-
-  input {
-    width: 8%;
-    margin-left: 10px;
-    border: none;
-    ${fontSize}
-    color: #8B8585;
-
-    &:hover,
-    &:focus {
-      outline: none;
-    }
-  }
-`
 
 export default Timer

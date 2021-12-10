@@ -30,7 +30,7 @@ function Home() {
           <form onSubmit={handleStartButton}>
             <Input
               firstPlayerScore={firstPlayerScore.toString()}
-              iconSrc={roundIcon}
+              iconSrc={crossIcon}
               alt={'Round'}
               value={firstPlayer}
               placeholder={'Leave empty to use a default name or enter player name'}
@@ -40,7 +40,7 @@ function Home() {
             />
             <Input
               secondPlayerScore={secondPlayerScore.toString()}
-              iconSrc={crossIcon}
+              iconSrc={roundIcon}
               value={secondPlayer}
               alt={'Cross'}
               placeholder={'Leave empty to use a default name or enter player name'}

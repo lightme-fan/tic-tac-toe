@@ -1,6 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
-import { fontSize } from '../../container/MainContainer'
+import { ButtonStyle } from './ButtonStyle'
 
 interface ButtonProp {
   label: string
@@ -14,16 +13,5 @@ const Button: React.FC<ButtonProp> = ({ label, onClick }) => {
     </ButtonStyle>
   )
 }
-
-const ButtonStyle = styled.div`
-  text-align: center;
-
-  button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    ${fontSize};
-  }
-`
 
 export default Button
