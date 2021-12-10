@@ -27,8 +27,10 @@ import {
   getWinner,
   selectWinner,
 } from '../redux/slices/winnerSlice'
+import { horizontalLine, verticalLine, diagonalLine } from './lines';
 
 function useTicTacToe() {
+  // Getting data from redux selector
   const boardState = useSelector(selectBoard)
   const player = useSelector(selectPlayers)
   const winnerState = useSelector(selectWinner)
@@ -42,21 +44,33 @@ function useTicTacToe() {
   const [isBoardFilled, setIsBoardFilled] = useState<boolean>(false)
   const [isDisabled, setIsDisabled] = useState<boolean>(false)
 
+  // Boards state
   const [boards, setBoards] = useState(boardState.boards)
+  
+  // Players State
   const [firstPlayer, setFirstPlayer] = useState<string>(player.first_player)
   const [secondPlayer, setSecondPlayer] = useState<string>(player.second_player)
+  
+  // Turn State
   const [timer, setTimer] = useState<string>(boardState.timer)
-
   const [turn, setTurn] = useState<string>(randomTurn)
+  
+  // Timing start
   const [timing, setTiming] = useState<number>(time)
+  
+  // Winner and draw State
   const [winner, setWinner] = useState<string | null>(winnerState.winner)
   const [isDraw, setIsDraw] = useState<boolean>(boardState.drawGame)
+  
+  // Players Score State
   const [firstPlayerScore, setFirstPlayerScore] = useState<number>(
     winnerState.firstPlayerScore
   )
   const [secondPlayerScore, setSecondPlayerScore] = useState<number>(
     winnerState.secondPlayerScore
   )
+
+  // Position State
   const [isHorizontal, setIsHorizontal] = useState<boolean>(
     crossBar.isHorizontal
   )
@@ -64,6 +78,7 @@ function useTicTacToe() {
   const [isDiagonal, setIsDiagonal] = useState<boolean>(crossBar.isDiagonal)
   const [position, setPosition] = useState(crossBar.position)
 
+  // Handle click on Start button
   const handleStartButton = (event: React.FormEvent) => {
     event.preventDefault()
     timer === '0' && setTimer('5')
@@ -77,6 +92,7 @@ function useTicTacToe() {
     }, 1000)
   }
 
+  // Handle click on each square
   function handleClickBoard(
     event: React.MouseEvent<HTMLButtonElement>,
     index: number
@@ -92,6 +108,7 @@ function useTicTacToe() {
 
   }
 
+  // A function that checks whether the squares are filled or not
   function isSquaresFilled(squares: string[]) {
     for (let i = 0; i < squares.length; i++) {
       if (squares[i] === '') {
@@ -101,6 +118,7 @@ function useTicTacToe() {
     return true
   }
 
+  // Check the winner
   function winningFunc() {
     let winningPositionsIndex = 0
     let winner: string | null = ''
@@ -128,71 +146,20 @@ function useTicTacToe() {
     }
   }
 
-  function horizontal(positionValue: string) {
-    setIsHorizontal(true)
-    dispatch(getHorizontal(true))
-    setPosition(positionValue)
-    dispatch(getPosition(positionValue))
+  // A function for lines
+  function setLinePosition(position: string, lineType: any, getLineType: any) {
+    lineType(true)
+    dispatch(getLineType(true))
+    setPosition(position)
+    dispatch(getPosition(position))
   }
 
-  function vertical(positionValue: string) {
-    setIsVertical(true)
-      dispatch(getVertical(true))
-      setPosition(positionValue)
-      dispatch(getPosition(positionValue))
-  }
-
-  function diagonal(positionValue: string) {
-    setIsDiagonal(true)
-    dispatch(getDiagonal(true))
-    setPosition(positionValue)
-    dispatch(getPosition(positionValue))
-  }
-
-  function horizontalLine() {
-    if (boards[0] === 'X' && boards[1] === 'X' && boards[2] === 'X') {
-      horizontal('167px')
-    } else if (boards[3] === 'X' && boards[4] === 'X' && boards[5] === 'X') {
-      horizontal('268px')
-    } else if (boards[6] === 'X' && boards[7] === 'X' && boards[8] === 'X') {
-      horizontal('375px')
-    } else if (boards[0] === 'O' && boards[1] === 'O' && boards[2] === 'O') {
-      horizontal('167px')
-    } else if (boards[3] === 'O' && boards[4] === 'O' && boards[5] === 'O') {
-      horizontal('268px')
-    } else if (boards[6] === 'O' && boards[7] === 'O' && boards[8] === 'O') {
-      horizontal('375px')
-    }
-  }
-
-  function verticalLine() {
-    if (boards[0] === 'X' && boards[3] === 'X' && boards[6] === 'X') {
-      vertical('16%')
-    } else if (boards[1] === 'X' && boards[4] === 'X' && boards[7] === 'X') {
-      vertical('50%')
-    } else if (boards[2] === 'X' && boards[5] === 'X' && boards[8] === 'X') {
-      vertical('84%')
-    } else if (boards[0] === 'O' && boards[3] === 'O' && boards[6] === 'O') {
-      vertical('16%')      
-    } else if (boards[1] === 'O' && boards[4] === 'O' && boards[7] === 'O') {
-      vertical('50%')
-    } else if (boards[2] === 'O' && boards[5] === 'O' && boards[8] === 'O') {
-      vertical('84%')
-    }
-  }
-
-  function diagonalLine() {
-    if (boards[0] === 'X' && boards[4] === 'X' && boards[8] === 'X') {
-      diagonal('-45deg')
-    } else if (boards[2] === 'X' && boards[4] === 'X' && boards[6] === 'X') {
-      diagonal('45deg')
-    } else if (boards[0] === 'O' && boards[4] === 'O' && boards[8] === 'O') {
-      diagonal('-45deg')
-    } else if (boards[2] === 'O' && boards[4] === 'O' && boards[6] === 'O') {
-      diagonal('45deg')
-    }
-  }
-
+  // Set Lines
+  const horizontal = (positionValue: string) => setLinePosition(positionValue, setIsHorizontal, getHorizontal)
+  const vertical = (positionValue: string) => setLinePosition(positionValue, setIsVertical, getVertical)
+  const diagonal = (positionValue: string) => setLinePosition(positionValue, setIsDiagonal, getDiagonal)
+  
+  // Check if the game is draw
   function drawGame() {
     const squares = isSquaresFilled(boards)
     
@@ -205,6 +172,7 @@ function useTicTacToe() {
     }
   }
 
+  // Handle restart button to go back to home page
   function handleRestartButton(heading: string) {
     dispatch(setStartGame())
 
@@ -238,6 +206,7 @@ function useTicTacToe() {
     }
   }
 
+  // Handle reboot button
   const handleRebootBtn = () => {
     setFirstPlayer('')
     setSecondPlayer('')
@@ -245,6 +214,7 @@ function useTicTacToe() {
     dispatch(getButtonLabel('Start'))
   }
 
+  // UeEffect
   useEffect(() => {
     let myInterval = setInterval(() => {
       if (time > 0) {
@@ -259,9 +229,9 @@ function useTicTacToe() {
     }
 
     winningFunc()
-    horizontalLine()
-    verticalLine()
-    diagonalLine()
+    horizontalLine(boards, horizontal)
+    verticalLine(boards, vertical)
+    diagonalLine(boards, diagonal)
     drawGame()
 
     return () => {
