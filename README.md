@@ -8,14 +8,24 @@
 
 [lightme-fan/Tic-tac-toe](https://github.com/lightme-fan/tic-tac-toe)
 
+## A demo video
+https://user-images.githubusercontent.com/60210180/145177233-866193d4-3ef1-491e-afef-168de64beb4d.mp4
+
+## A screenshot
+![tic-tac-toe](https://user-images.githubusercontent.com/60210180/145177455-3c270c44-2bf1-4559-a028-9a2141485774.png)
+
+## Used technologies
+- React
+- Typescript
+- Styled-components
+- Redux
+
 ## Features
-
 - Human vs human
-
 - Setting the game up:
   - Two players
-  - Timer for each player
-  - Start button
+  - Set timer for each player
+  - Click Start button
 - Playing the game:
   - Winning: if one of the players has clicked 3 squares which either in a raw, column or diagonal.
   - If one of the players runs out of time, the other player wins.
