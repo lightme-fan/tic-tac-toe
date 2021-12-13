@@ -15,22 +15,22 @@ https://user-images.githubusercontent.com/60210180/145177233-866193d4-3ef1-491e-
 ![tic-tac-toe](https://user-images.githubusercontent.com/60210180/145177455-3c270c44-2bf1-4559-a028-9a2141485774.png)
 
 ## Used technologies
-- React
-- Typescript
-- Styled-components
-- Redux
+- [React](https://reactjs.org/)
+- [Typescript](https://www.typescriptlang.org/)
+- [Styled-components](https://styled-components.com/)
+- [Redux](https://redux.js.org/)
 
 ## Features
-- Human vs human
+- Human vs human period.
 - Setting the game up:
-  - Two players
-  - Set timer for each player
-  - Click Start button
+  - Two players.
+  - Set timer for each player.
+  - Click Start button.
 - Playing the game:
   - Winning: if one of the players has clicked 3 squares which either in a raw, column or diagonal.
   - If one of the players runs out of time, the other player wins.
   - If the boards are filled and none won, it's a draw.
-- Restart button to get back to the Setting up game
+- Restart button to get back to the setting up game.
   - Can choose either to play again or reboot the game.
 
 ## Getting started
