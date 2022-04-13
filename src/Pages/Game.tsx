@@ -21,7 +21,7 @@ const Game = () => {
   } = useTicTacToe()
 
   let heading = `${
-    turn === 'X' ? player.second_player : player.first_player
+    turn === 'X' ? player.first_player : player.second_player
   }'s turn`
   if (timing <= 0) {
     heading = `Time out - ${
